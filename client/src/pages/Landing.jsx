@@ -66,7 +66,7 @@ export function Landing() {
                         AIESEC Exchange Analytics Platform
                     </Typography>
                     <Typography variant="h5" sx={{ mb: 4, opacity: 0.9, fontWeight: 400, lineHeight: 1.6 }}>
-                        A comprehensive analytics platform for monitoring and analysing data related to AIESEC exchange programs.
+                        An analytics platform for monitoring and analysing data related to AIESEC exchange programs.
                         Uses the same endpoints as https://expa.aiesec.org/analytics/graphical
                     </Typography>
                     <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
