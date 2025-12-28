@@ -1,5 +1,11 @@
 from fastapi import Response
 from typing import Optional
+from dotenv import load_dotenv
+from schema.config import ServerSettings
+
+load_dotenv()
+settings = ServerSettings()
+is_prod = not settings.debug
 
 def set_cookie(
     response: Response,
@@ -7,14 +13,14 @@ def set_cookie(
     value: str,
     *,
     max_age: Optional[int] = None,
-    secure: bool = False,
+    secure: bool = is_prod,
 ):
     response.set_cookie(
         key=name,
         value=value,
         httponly=True,
         secure=secure,
-        samesite="strict",
+        samesite="none" if is_prod else "strict",
         path="/",
         max_age=max_age,
     )
