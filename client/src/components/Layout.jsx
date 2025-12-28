@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -22,10 +22,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
   Home as HomeIcon,
   Dashboard as DashboardIcon,
-  BarChart as BarChartIcon,
-  Assessment as AssessmentIcon,
   Logout as LogoutIcon,
-  Circle as CircleIcon,
 } from "@mui/icons-material";
 import { api } from "../utils/api";
 import aiesecLogo from "../assets/aiesec-logo-blue.svg";
@@ -44,11 +41,11 @@ const getPageTitle = (pathname) => {
     case "/dashboard":
       return "Dashboard";
     default:
-      return "Exchange Analytics Platform";
+      return (<Box  component="img" src={aiesecLogo} mt={1} />);
   }
 };
 
-export function Layout({ children }) {
+export function Layout() {
   const [open, setOpen] = useState(true);
   const [serverStatus, setServerStatus] = useState("offline");
   const [loading, setLoading] = useState(true);
@@ -64,9 +61,15 @@ export function Layout({ children }) {
     navigate(path);
   };
 
-  const handleLogout = () => {
-    console.log("Logout clicked");
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout");
+      window.location.href = "/";
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
   };
+
 
   const getServerHealth = async () => {
     try {
@@ -273,7 +276,7 @@ export function Layout({ children }) {
         }}
       >
         <Toolbar />
-        {children}
+        <Outlet />
       </Box>
     </Box>
   );
