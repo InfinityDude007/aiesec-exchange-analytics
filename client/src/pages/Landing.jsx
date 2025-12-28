@@ -142,8 +142,7 @@ export function Landing() {
                         sx={{
                             p: 3,
                             borderRadius: 2,
-                            border: `1px solid ${theme.palette.secondary.dark}`,
-                            backgroundColor: `${theme.palette.secondary.dark}08`,
+                            backgroundColor: `${theme.palette.secondary.dark}10`,
                             display: "flex",
                             justifyContent: "center"
                         }}
@@ -156,8 +155,8 @@ export function Landing() {
                         sx={{
                             p: 3,
                             borderRadius: 2,
-                            border: `1px solid ${serverStatus === "online" ? theme.palette.success.light : theme.palette.error.light}`,
-                            backgroundColor: `${serverStatus === "online" ? `${theme.palette.success.main}08` : `${theme.palette.error.main}08`}`,
+                            backgroundColor: `${serverStatus === "online" ? `${theme.palette.success.main}15` : `${theme.palette.error.main}15`}`,
+                            boxShadow: "none",
                         }}
                     >
                         <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
