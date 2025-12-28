@@ -5,10 +5,14 @@ from dotenv import load_dotenv
 import os
 from utils import get_local_timestamp
 from schema import RootResponse, HealthResponse, ServerSettings
+from routes import main_router
 
 load_dotenv()
 
 server = FastAPI(root_path="/api")
+server.include_router(main_router)
+
+settings = ServerSettings()
 
 origins = os.getenv("CORS_ORIGINS", "").split(",")
 origins = [origin for origin in origins if origin]
@@ -19,12 +23,6 @@ server.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
-)
-
-settings = ServerSettings(
-    backend_host=os.getenv("BACKEND_HOST", "0.0.0.0"),
-    backend_port=int(os.getenv("BACKEND_PORT", 8000)),
-    debug=os.getenv("DEBUG", "false").lower() == "true"
 )
 
 @server.get("/", response_model=RootResponse, summary="Root endpoint", tags=["General"])
@@ -42,4 +40,4 @@ async def health_check():
     )
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host=settings.backend_host, port=settings.backend_port, reload=settings.debug)
+    uvicorn.run("main:server", host=settings.backend_host, port=settings.backend_port, reload=settings.debug)
