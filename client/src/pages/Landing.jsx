@@ -49,68 +49,91 @@ export function Landing() {
     }, []);
 
     return (
-        <Box sx={{ maxWidth: 1200, mx: "auto" }}>
-            {/* Hero Section */}
-            <Paper
-                elevation={0}
-                sx={{
-                    p: 6,
-                    mb: 4,
-                    borderRadius: 3,
-                    backgroundColor: theme.palette.primary.main,
-                    color: theme.palette.primary.contrastText,
-                }}
-            >
-                <Box sx={{ maxWidth: "75%" }}>
-                    <Typography variant="h1" sx={{ mb: 2, color: "inherit" }}>
-                        AIESEC Exchange Analytics Platform
-                    </Typography>
-                    <Typography variant="h5" sx={{ mb: 4, opacity: 0.9, fontWeight: 400, lineHeight: 1.6 }}>
-                        An analytics platform for monitoring and analysing data related to AIESEC exchange programs.
-                        Uses the same endpoints as https://expa.aiesec.org/analytics/graphical
-                    </Typography>
-                    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            href={docsUrl}
-                            target="__blank"
-                            startIcon={<ArticleIcon />}
-                            endIcon={<OpenInNewIcon sx={{ fontSize: 18 }} />}
-                            sx={{
-                                backgroundColor: "white",
-                                color: theme.palette.primary.main,
-                                fontWeight: 600,
-                                px: 3,
-                                boxShadow: "none",
-                                "&:hover": {
-                                    backgroundColor: "rgba(255, 255, 255, 0.9)",
+        <Box sx={{ maxWidth: 1200, minHeight: "85vh", mx: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+            <Box>
+                {/* Hero Section */}
+                <Paper
+                    elevation={0}
+                    sx={{
+                        p: 6,
+                        mb: 4,
+                        borderRadius: 3,
+                        backgroundColor: theme.palette.primary.main,
+                        color: theme.palette.primary.contrastText,
+                    }}
+                >
+                    <Box sx={{ maxWidth: "75%" }}>
+                        <Typography variant="h1" sx={{ mb: 2, color: "inherit" }}>
+                            AIESEC Exchange Analytics Platform
+                        </Typography>
+                        <Typography variant="h5" sx={{ mb: 4, opacity: 0.9, fontWeight: 400, lineHeight: 1.6 }}>
+                            An analytics platform for monitoring and analysing data related to AIESEC exchange programs.
+                            Uses the same endpoints as https://expa.aiesec.org/analytics/graphical
+                        </Typography>
+                        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                href={docsUrl}
+                                target="__blank"
+                                startIcon={<ArticleIcon />}
+                                endIcon={<OpenInNewIcon sx={{ fontSize: 18 }} />}
+                                sx={{
+                                    backgroundColor: "white",
+                                    color: theme.palette.primary.main,
+                                    fontWeight: 600,
+                                    px: 3,
                                     boxShadow: "none",
-                                },
-                            }}
-                        >
-                            API Documentation
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            size="large"
-                            href="/dashboard"
-                            sx={{
-                                borderColor: "white",
-                                color: "white",
-                                fontWeight: 600,
-                                px: 3,
-                                "&:hover": {
+                                    "&:hover": {
+                                        backgroundColor: "rgba(255, 255, 255, 0.9)",
+                                        boxShadow: "none",
+                                    },
+                                }}
+                            >
+                                API Documentation
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                size="large"
+                                href="/dashboard"
+                                sx={{
                                     borderColor: "white",
-                                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                                },
-                            }}
-                        >
-                            Go to Dashboard
-                        </Button>
+                                    color: "white",
+                                    fontWeight: 600,
+                                    px: 3,
+                                    "&:hover": {
+                                        borderColor: "white",
+                                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                                    },
+                                }}
+                            >
+                                Go to Dashboard
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
-            </Paper>
+                </Paper>
+
+                {/* Project Information */}
+                <Paper
+                    elevation={0}
+                    sx={{
+                        p: 3,
+                        borderRadius: 2,
+                        backgroundColor:`${theme.palette.secondary.dark}10`,
+                    }}
+                >
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+                        <Box>
+                            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                AIESEC GST 2026.1  - GID Project Manager Application
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                This project was made by Armaan Jhanji as part of the functional questions for the Project Manager Application.
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Paper>
+            </Box>
 
             {/* Server Status Card */}
             {(loading ? (
@@ -118,7 +141,6 @@ export function Landing() {
                         elevation={0}
                         sx={{
                             p: 3,
-                            mb: 4,
                             borderRadius: 2,
                             border: `1px solid ${theme.palette.secondary.dark}`,
                             backgroundColor: `${theme.palette.secondary.dark}08`,
@@ -133,7 +155,6 @@ export function Landing() {
                         elevation={0}
                         sx={{
                             p: 3,
-                            mb: 4,
                             borderRadius: 2,
                             border: `1px solid ${serverStatus === "online" ? theme.palette.success.light : theme.palette.error.light}`,
                             backgroundColor: `${serverStatus === "online" ? `${theme.palette.success.main}08` : `${theme.palette.error.main}08`}`,
