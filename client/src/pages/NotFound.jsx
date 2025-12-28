@@ -15,7 +15,7 @@ export function NotFound() {
                 minHeight: "60vh",
                 textAlign: "center",
             }}
-            >
+        >
             <Typography variant="h1" sx={{ mb: 2, fontSize: "6rem", fontWeight: 700, opacity: 0.3 }}>
                 404
             </Typography>
