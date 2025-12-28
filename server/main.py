@@ -10,9 +10,12 @@ load_dotenv()
 
 server = FastAPI(root_path="/api")
 
+origins = os.getenv("CORS_ORIGINS", "").split(",")
+origins = [origin for origin in origins if origin]
+
 server.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
