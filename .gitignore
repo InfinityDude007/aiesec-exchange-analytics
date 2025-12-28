@@ -1,0 +1,27 @@
+# VS Code & MacOS files
+.vscode/*
+.vscode/
+!.vscode/extensions.json
+.DS_Store
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media
+*.py[cod]
+*$py.class
+*/staticfiles
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
