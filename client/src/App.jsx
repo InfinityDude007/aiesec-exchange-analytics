@@ -1,8 +1,9 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { muiTheme } from "./theme";
 
+import { ProtectedRoute } from "./utils/ProtectedRoute";
+import { Login } from "./pages/Login";
 import { Layout } from "./components/Layout";
 import { Landing } from "./pages/Landing";
 import { NotFound } from "./pages/NotFound";
@@ -12,18 +13,23 @@ function App() {
     <ThemeProvider theme={muiTheme}>
       <CssBaseline />
       <BrowserRouter>
-        <Layout>
-          <Routes>
+        <Routes>
 
-            <Route path='/' element={<Landing />}/>
-            <Route path="*" element={<NotFound />} />
+          <Route path="/login" element={<Login />} />
 
-          </Routes>
-        </Layout>
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Layout />}>
+
+              <Route path="/" element={<Landing />} />
+              <Route path="*" element={<NotFound />} />
+
+            </Route>
+          </Route>
+
+        </Routes>
       </BrowserRouter>
-
     </ThemeProvider>
   );
-};
+}
 
 export default App;
