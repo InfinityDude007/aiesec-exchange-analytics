@@ -28,7 +28,10 @@ import {
     Tooltip,
     ResponsiveContainer,
     CartesianGrid,
-    Cell
+    Cell,
+    FunnelChart,
+    Funnel,
+    LabelList
 } from "recharts";
 import { Header } from "../components/Header";
 import { Filters } from "../components/Filters";
@@ -76,6 +79,15 @@ export function KPIs() {
         color: metric.fontColor
     }));
 
+    const funnelData = [
+        { name: "Sign Ups", value: data?.total_signup?.doc_count ?? 0, color: "#a47d7c" },
+        { name: "Applications", value: data?.total_applications?.doc_count ?? 0, color: "#4671a6" },
+        { name: "Accepted",value: data?.total_matched?.doc_count ?? 0, color: "#92a8cc" },
+        { name: "Approvals", value: data?.total_approvals?.doc_count ?? 0, color: "#aa4643" },
+        { name: "Realized", value: data?.total_realized?.doc_count ?? 0, color: "#89a44f" },
+        { name: "Finished", value: data?.total_finished?.doc_count ?? 0, color: "#3d96ad" }
+    ];
+
     const CustomTooltip = ({ active, payload, label }) => {
         if (!active || !payload || !payload.length) return null;
         const value = payload[0].value;
@@ -83,9 +95,8 @@ export function KPIs() {
         return (
             <Box
                 sx={{
-                    backgroundColor: theme.palette.background.default,
-                    px: 2,
-                    py: 1,
+                    backgroundColor: theme.palette.background.paper,
+                    p: 2,
                     borderRadius: "6px",
                     boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
                     textAlign: "center"
@@ -93,21 +104,11 @@ export function KPIs() {
             >
                 <Typography
                     sx={{
-                        fontSize: "0.85rem",
+                        fontSize: "1rem",
                         color: "#555",
-                        mb: 0.5
                     }}
                 >
-                    {label}
-                </Typography>
-                <Typography
-                    sx={{
-                        fontWeight: 600,
-                        color: fontColor,
-                        fontSize: "1rem"
-                    }}
-                >
-                    {formatNumber(value)}
+                    {label} : <span style={{ fontWeight: 600, color: fontColor, fontSize: "1rem" }}>{formatNumber(value)}</span>
                 </Typography>
             </Box>
         );
@@ -169,6 +170,7 @@ export function KPIs() {
                     <Tabs value={tab} onChange={(_, v) => setTab(v)} >
                         <Tab label="Overview" />
                         <Tab label="KPI Distribution" />
+                        <Tab label="Conversion Funnel" />
                     </Tabs>
 
                     <Paper elevation={0} sx={{ minWidth: "100%", boxShadow: "none", mt: 4, backgroundColor: theme.palette.background.default }}>
@@ -196,7 +198,7 @@ export function KPIs() {
                                 }}
                                 >
                                 <Typography variant="h4">
-                                    Select Entity and Time Period to view KPI overview.
+                                    Select Entity and Time Period to view the Overview.
                                 </Typography>
                             </Paper>
                         )}
@@ -224,7 +226,7 @@ export function KPIs() {
                                             cursor={{ fill: "#cccccc58" }} 
                                             content={<CustomTooltip />} 
                                         />
-                                        <Bar dataKey="value" name={"none"}>
+                                        <Bar dataKey="value">
                                             {chartData.map((entry, index) => (
                                                 <Cell key={`cell-${index}`} fill={entry.color} />
                                             ))}
@@ -246,10 +248,64 @@ export function KPIs() {
                                 }}
                                 >
                                 <Typography variant="h4">
-                                    Select Entity and Time Period to view KPI distribution.
+                                    Select Entity and Time Period to view the KPI Distribution.
                                 </Typography>
                             </Paper>
                         )}
+
+                        {!loading && !error && tab === 2 && data && (
+                            <Box>
+                                <ResponsiveContainer width="100%" height={600}>
+                                    <FunnelChart>
+                                        <Funnel
+                                            dataKey="value"
+                                            data={funnelData}
+                                            isAnimationActive
+                                            stroke="#fff"
+                                            reversed
+                                        >
+                                            {funnelData.map((entry, index) => (
+                                                <Cell key={index} fill={entry.color} />
+                                            ))}
+
+                                            <LabelList
+                                                position="left"
+                                                dataKey="name"
+                                                fill={theme.palette.text.primary}
+                                                offset={20} 
+                                                fontSize={16}
+                                            />
+
+                                            <LabelList
+                                                position="right"
+                                                dataKey="value"
+                                                offset={20}
+                                                fontSize={16}
+                                                fontWeight={600}                               
+                                            />
+                                        </Funnel>
+                                    </FunnelChart>
+                                </ResponsiveContainer>
+                            </Box>
+                        )}
+
+                        {!loading && !error && tab === 2 && !data && (
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    display: "flex",
+                                    p: 7,
+                                    border: "1px solid #e0e0e0",
+                                    justifyContent: "center",
+                                    boxShadow: "none"
+                                }}
+                                >
+                                <Typography variant="h4">
+                                    Select Entity and Time Period to view the Conversion Funnel.
+                                </Typography>
+                            </Paper>
+                        )}
+
 
                     </Paper>
                 </Paper>
