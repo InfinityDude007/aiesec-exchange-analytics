@@ -127,5 +127,21 @@ export const muiTheme = createTheme({
                 },
             },
         },
+        MuiTabs: {
+            styleOverrides: {
+                root: {
+                    borderBottom: `2px solid #cccccc90`,
+                },
+            },
+        },
+        MuiTab: {
+            styleOverrides: {
+                root: {
+                    textTransform: "none",
+                    fontWeight: "600",
+                    fontSize: "1rem",
+                },
+            },
+        },
     },
 });
