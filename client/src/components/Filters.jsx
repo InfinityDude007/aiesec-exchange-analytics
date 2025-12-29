@@ -149,18 +149,18 @@ export function Filters({ onChange }) {
 
     const filters = [
         {
-            id: "exchange",
-            title: "Exchange Type",
-            options: ["Incoming", "Outgoing"],
-            value: exchangeType,
-            update: setExchangeType
-        },
-        {
             id: "interval",
             title: "Interval",
             options: ["Monthly", "Weekly", "Daily"],
             value: interval,
             update: setInterval
+        },
+        {
+            id: "exchange",
+            title: "Exchange Type",
+            options: ["Incoming", "Outgoing"],
+            value: exchangeType,
+            update: setExchangeType
         },
         {
             id: "product",
