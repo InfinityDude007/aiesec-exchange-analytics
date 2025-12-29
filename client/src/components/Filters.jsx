@@ -13,6 +13,8 @@ import {
     Tooltip,
     Autocomplete,
     TextField,
+    Checkbox,
+    ListItemText,
     useTheme,
 } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
@@ -41,7 +43,7 @@ export function Filters({ onChange }) {
 
     const [exchangeType, setExchangeType] = useState("");
     const [interval, setInterval] = useState("");
-    const [product, setProduct] = useState("");
+    const [product, setProduct] = useState([]);
     const [aiesecer, setAiesecer] = useState("");
 
     const selectedFilters = {
@@ -50,7 +52,7 @@ export function Filters({ onChange }) {
         endDate: endDate?.format("YYYY-MM-DD") || null,
         exchangeType: exchangeType,
         interval: interval,
-        product: product,
+        product: product.length ? product : null,
         aiesecer: aiesecer,
     };
 
@@ -167,7 +169,8 @@ export function Filters({ onChange }) {
             title: "Product",
             options: ["Global Volunteer", "Global Talent", "Global Teacher"],
             value: product,
-            update: setProduct
+            update: setProduct,
+            multiple: true
         },
         {
             id: "aiesecer",
@@ -396,7 +399,11 @@ export function Filters({ onChange }) {
                                     id={`${filter.id}-select`}
                                     value={filter.value}
                                     label={filter.title}
+                                    multiple={filter.multiple}
                                     onChange={(e) => filter.update(e.target.value)}
+                                    renderValue={(selected) =>
+                                        Array.isArray(selected) ? selected.join(", ") : selected
+                                    }
                                     sx={{
                                         backgroundColor: theme.palette.background.default,
                                         "& .MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.background.tertiary },
@@ -413,7 +420,10 @@ export function Filters({ onChange }) {
                                                     "&.Mui-selected": { backgroundColor: `${theme.palette.primary.main}20` },
                                                 }}
                                             >
-                                                {option}
+                                                {filter.multiple && (
+                                                    <Checkbox size="small" checked={filter.value.indexOf(option) > -1} />
+                                                )}
+                                                <ListItemText primary={option} />
                                             </MenuItem>
                                         ))
                                     )}
