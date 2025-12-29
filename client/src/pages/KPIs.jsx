@@ -35,6 +35,7 @@ import {
 } from "recharts";
 import { Header } from "../components/Header";
 import { Filters } from "../components/Filters";
+import { CustomTooltip } from "../components/CustomTooltip";
 import { api } from "../utils/api";
 import { formatNumber } from "../utils/formatNumber";
 
@@ -87,32 +88,6 @@ export function KPIs() {
         { name: "Realized", value: data?.total_realized?.doc_count ?? 0, color: "#89a44f" },
         { name: "Finished", value: data?.total_finished?.doc_count ?? 0, color: "#3d96ad" }
     ];
-
-    const CustomTooltip = ({ active, payload, label }) => {
-        if (!active || !payload || !payload.length) return null;
-        const value = payload[0].value;
-        const fontColor = payload[0].payload.color;
-        return (
-            <Box
-                sx={{
-                    backgroundColor: theme.palette.background.paper,
-                    p: 2,
-                    borderRadius: "6px",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-                    textAlign: "center"
-                }}
-            >
-                <Typography
-                    sx={{
-                        fontSize: "1rem",
-                        color: "#555",
-                    }}
-                >
-                    {label} : <span style={{ fontWeight: 600, color: fontColor, fontSize: "1rem" }}>{formatNumber(value)}</span>
-                </Typography>
-            </Box>
-        );
-    };
 
     const KpiCard = ({ label, value, icon, fontColor }) => (
         <Box
