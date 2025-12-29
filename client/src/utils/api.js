@@ -1,15 +1,29 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
 async function apiFetch(endpoint, options = {}) {
-    const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    const { params, ...fetchOptions } = options;
+    let url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+
+    if (params && Object.keys(params).length > 0) {
+        const query = new URLSearchParams(
+            Object.entries(params).filter(
+                ([_, v]) => v !== null && v !== undefined && v !== ""
+            )
+        ).toString();
+        url += `?${query}`;
+    }
 
     const headers = {
         "Content-Type": "application/json",
-        ...(options.headers || {}),
+        ...(fetchOptions.headers || {}),
     };
 
     try {
-        const response = await fetch(url, { credentials: "include", ...options, headers });
+        const response = await fetch(url, {
+            credentials: "include",
+            ...fetchOptions,
+            headers 
+        });
 
         if (!response.ok) {
             const errText = await response.text();
@@ -32,7 +46,7 @@ async function apiFetch(endpoint, options = {}) {
 
 export const api = {
 
-    get: (endpoint) => apiFetch(endpoint),
+    get: (endpoint, params) => apiFetch(endpoint, { params }),
 
     post: (endpoint, data) =>
         apiFetch(endpoint, {
