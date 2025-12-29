@@ -13,6 +13,7 @@ class ServerSettings(BaseSettings):
     auth_client_secret: str
     auth_redirect_uri: AnyHttpUrl
     gis_auth_endpoint: AnyHttpUrl
+    aiesec_graphql_url: AnyHttpUrl
 
     class Config:
         env_file = ".env"
