@@ -28,7 +28,7 @@ import {
 import { api } from "../utils/api";
 
 
-export function Filters({ onChange }) {
+export function Filters({ isLoading, onChange }) {
     const theme = useTheme();
 
     const [officeQuery, setOfficeQuery] = useState("");
@@ -43,7 +43,7 @@ export function Filters({ onChange }) {
 
     const [exchangeType, setExchangeType] = useState("");
     const [interval, setInterval] = useState("");
-    const [product, setProduct] = useState([]);
+    const [products, setProducts] = useState([]);
     const [aiesecer, setAiesecer] = useState("");
 
     const selectedFilters = {
@@ -52,7 +52,7 @@ export function Filters({ onChange }) {
         endDate: endDate?.format("YYYY-MM-DD") || null,
         exchangeType: exchangeType,
         interval: interval,
-        product: product.length ? product : null,
+        products: products.length ? products : null,
         aiesecer: aiesecer,
     };
 
@@ -62,7 +62,7 @@ export function Filters({ onChange }) {
         }
     };
 
-    const isApplyDisabled = !selectedOffice || !startDate || !endDate;
+    const isApplyDisabled = !selectedOffice || !startDate || !endDate || isLoading;
 
     const handleClear = () => {
         setOfficeQuery("");
@@ -75,7 +75,7 @@ export function Filters({ onChange }) {
 
         setExchangeType("");
         setInterval("");
-        setProduct("");
+        setProducts("");
         setAiesecer("");
     };
 
@@ -165,11 +165,11 @@ export function Filters({ onChange }) {
             update: setExchangeType
         },
         {
-            id: "product",
-            title: "Product",
+            id: "products",
+            title: "Products",
             options: ["Global Volunteer", "Global Talent", "Global Teacher"],
-            value: product,
-            update: setProduct,
+            value: products,
+            update: setProducts,
             multiple: true
         },
         {
