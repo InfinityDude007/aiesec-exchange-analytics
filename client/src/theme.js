@@ -15,7 +15,7 @@ export const muiTheme = createTheme({
             tertiary: "#cccccc",
         },
         text: {
-            primary: "#333333",
+            primary: "#515151",
             secondary: "#666666",
             tertiary: "#cccccc",
             contrast: "#000000",
