@@ -75,7 +75,7 @@ export function Filters({ isLoading, onChange }) {
 
         setExchangeType("");
         setInterval("");
-        setProducts("");
+        setProducts([]);
         setAiesecer("");
     };
 
