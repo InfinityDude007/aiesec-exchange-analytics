@@ -46,7 +46,7 @@ const getPageTitle = (pathname) => {
 };
 
 export function Layout() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [serverStatus, setServerStatus] = useState("offline");
   const [loading, setLoading] = useState(true);
   const location = useLocation();
