@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 import {
     Replay as ClearIcon,
     Search as SearchIcon,
+    Tune as FilterIcon,
 } from "@mui/icons-material";
 import { api } from "../utils/api";
 
@@ -53,11 +54,13 @@ export function Filters({ onChange }) {
         aiesecer: aiesecer,
     };
 
-    useEffect(() => {
+    const handleApplyFilters = () => {
         if (onChange) {
             onChange(selectedFilters);
         }
-    }, [onChange, selectedOffice, startDate, endDate, exchangeType, interval, product, aiesecer]);
+    };
+
+    const isApplyDisabled = !selectedOffice || !startDate || !endDate;
 
     const handleClear = () => {
         setOfficeQuery("");
@@ -181,7 +184,8 @@ export function Filters({ onChange }) {
                 <Paper
                     elevation={0}
                     sx={{
-                        py: 2,
+                        pt: 1,
+                        pb: 2,
                         px: 4,
                         borderRadius: 1,
                         backgroundColor: theme.palette.background.secondary,
@@ -190,14 +194,36 @@ export function Filters({ onChange }) {
                 >
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between",  mb: 2 }} >
                         <Typography variant="h6" fontWeight="700">Filters</Typography>
-                        <Tooltip title="Clear filters" arrow placement="bottom">
-                            <IconButton
-                                onClick={() => handleClear()}
-                                sx={{ "&:hover": { color: theme.palette.primary.main } }}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                mt: 2,
+                                gap: 2,
+                            }}
+                        >
+                            <Tooltip title="Clear filters" arrow placement="bottom">
+                                <IconButton
+                                    onClick={() => handleClear()}
+                                    sx={{ "&:hover": { color: theme.palette.error.dark } }}
+                                >
+                                    <ClearIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Button
+                                variant="outlined"
+                                startIcon={<FilterIcon />}
+                                disabled={isApplyDisabled}
+                                onClick={handleApplyFilters}
+                                sx={{
+                                    px: 4,
+                                    py: 1,
+                                    fontWeight: 600,
+                                }}
                             >
-                                <ClearIcon />
-                            </IconButton>
-                        </Tooltip>
+                                Apply Filters
+                            </Button>
+                        </Box>
                     </Box>
 
                     <Box sx={{ display: "flex", flexDirection: "row", minWidth: "100%", justifyContent: "space-between", gap: 2,  mb: 1.4 }}>
