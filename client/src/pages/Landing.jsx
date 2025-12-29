@@ -95,7 +95,8 @@ export function Landing() {
                             <Button
                                 variant="outlined"
                                 size="large"
-                                href="/dashboard"
+                                href="https://expa.aiesec.org/analytics/graphical"
+                                target="__blank"
                                 sx={{
                                     borderColor: "white",
                                     color: "white",
@@ -107,7 +108,7 @@ export function Landing() {
                                     },
                                 }}
                             >
-                                Go to Dashboard
+                                Visit EXPA Graphical
                             </Button>
                         </Box>
                     </Box>
