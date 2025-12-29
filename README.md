@@ -58,6 +58,8 @@ An analytics platform for monitoring and analysing data related to AIESEC exchan
 
 ## Notes
 
+- ! IMPORTANT: Incase the OAuth flow breaks, please remove the ProtectedRoute wrapper from client/App.jsx, and manually set a localhost cookie with a valid access_token from EXPA.
+
 - The repo contains the environment variables required for the demo.
 - After the selection process has concluded, all variables will be cleared and regenerated.
 - The platform demo works best in development mode, hence please use the commands above.
