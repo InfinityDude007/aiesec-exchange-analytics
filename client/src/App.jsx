@@ -6,6 +6,7 @@ import { ProtectedRoute } from "./utils/ProtectedRoute";
 import { Login } from "./pages/Login";
 import { Layout } from "./components/Layout";
 import { Landing } from "./pages/Landing";
+import { KPIs } from "./pages/KPIs";
 import { NotFound } from "./pages/NotFound";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route element={<Layout />}>
 
               <Route path="/" element={<Landing />} />
+              <Route path="/kpis" element={<KPIs />} />
               <Route path="*" element={<NotFound />} />
 
             </Route>
