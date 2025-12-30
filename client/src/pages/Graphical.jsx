@@ -141,7 +141,7 @@ export function Graphical() {
         <Box sx={{ maxWidth: 1200, minHeight: "85vh", mx: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", mb: 4 }}>
             <Box>
 
-                <Header title={"Graphical Analytics"} subtitle={"View the time series of exchange data for an entity."} />
+                <Header title={"Graphical Analytics"} subtitle={"Visualise detailed analytics based on time periods, with flexible filtering and interval-based aggregation (daily, weekly, or monthly)"} />
                 <Filters
                     isLoading={loading}
                     onChange={(filters) => {
