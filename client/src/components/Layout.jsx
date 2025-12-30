@@ -22,6 +22,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
   Home as HomeIcon,
   Dashboard as KpisIcon,
+  Analytics as GraphicalIcon,
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 import { api } from "../utils/api";
@@ -32,6 +33,7 @@ const drawerWidth = 260;
 const menuItems = [
   { text: "Home", icon: <HomeIcon />, path: "/" },
   { text: "KPIs", icon: <KpisIcon />, path: "/kpis" },
+  { text: "Graphical", icon: <GraphicalIcon />, path: "/graphical" },
 ];
 
 const getPageTitle = (pathname) => {
@@ -40,6 +42,8 @@ const getPageTitle = (pathname) => {
       return (<Box  component="img" src={aiesecLogo} mt={1} />);
     case "/kpis":
       return "KPIs";
+    case "/graphical":
+      return "Graphical";
     default:
       return (<Box  component="img" src={aiesecLogo} mt={1} />);
   }
