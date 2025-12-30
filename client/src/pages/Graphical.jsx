@@ -9,6 +9,12 @@ import {
     Alert,
     Switch,
     FormControlLabel,
+    Select,
+    MenuItem,
+    Checkbox,
+    ListItemText,
+    InputLabel,
+    FormControl,
     useTheme
 } from "@mui/material";
 import {
@@ -119,6 +125,18 @@ export function Graphical() {
         );
     };
 
+    const seriesConfig = {
+        "Sign Ups": "#a47d7c",
+        "Applications": "#4671a6",
+        "Accepted by Host": "#92a8cc",
+        "Approvals": "#aa4643",
+        "Realizations": "#89a44f",
+        "Remote Realizations": "#81699b",
+        "Finished": "#3d96ad",
+        "Completed": "#0b352a",
+    };
+    const [selectedLines, setSelectedLines] = useState(Object.keys(seriesConfig));
+
     return (
         <Box sx={{ maxWidth: 1200, minHeight: "85vh", mx: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", mb: 4 }}>
             <Box>
@@ -135,7 +153,7 @@ export function Graphical() {
                 <Paper elevation={0} sx={{ mt: 4, boxShadow: "none", backgroundColor: theme.palette.background.default, justifyContent: "center" }}>
                     <Tabs value={tab} onChange={(_, v) => setTab(v)} >
                         <Tab label="Time Series" />
-                        <Tab label="WIP" />
+                        <Tab label="Filtered Time Series" />
                     </Tabs>
 
                     <Paper elevation={0} sx={{ minWidth: "100%", boxShadow: "none", mt: 4, backgroundColor: theme.palette.background.default }}>
@@ -222,8 +240,100 @@ export function Graphical() {
                                 </Typography>
                             </Paper>
                         )}
-                    </Paper>
 
+                        {!loading && !error && tab === 1 && data && (
+                            <Box>
+                                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                                    <FormControl size="small">
+                                        <InputLabel>Visible Lines</InputLabel>
+                                        <Select
+                                            multiple
+                                            value={selectedLines}
+                                            onChange={(e) => setSelectedLines(e.target.value)}
+                                            label="Visible Lines"
+                                            renderValue={(selected) => selected.join(", ")}
+                                        >
+                                            {Object.keys(seriesConfig).map((key) => (
+                                                <MenuItem key={key} value={key}>
+                                                    <Checkbox checked={selectedLines.includes(key)} />
+                                                    <ListItemText primary={key} />
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    <FormControlLabel
+                                        labelPlacement="start"
+                                        control={
+                                            <Switch
+                                                size="small"
+                                                checked={lineType === "monotone"}
+                                                onChange={(e) =>
+                                                    setLineType(e.target.checked ? "monotone" : "linear")
+                                                }
+                                                color="primary"
+                                            />
+                                        }
+                                        label={lineType === "monotone" ? "Smooth" : "Linear"}
+                                    />
+                                </Box>
+
+                                <ResponsiveContainer width="100%" height={600}>
+                                    <LineChart data={timeSeriesData}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+
+                                        <XAxis
+                                            dataKey="date"
+                                            tickFormatter={(value) =>
+                                                new Date(value).toLocaleDateString(undefined, {
+                                                    month: "short",
+                                                    day: "numeric"
+                                                })
+                                            }
+                                        />
+
+                                        <YAxis />
+                                        <Tooltip content={<TimeSeriesTooltip />} />
+
+                                        <Legend
+                                            formatter={(value) => (
+                                                <span style={{ fontSize: 14, marginRight: "15px" }}>{value}</span>
+                                            )}
+                                        />
+
+                                        {Object.entries(seriesConfig)
+                                            .filter(([key]) => selectedLines.includes(key))
+                                            .map(([key, color]) => (
+                                                <Line
+                                                    key={key}
+                                                    type={lineType}
+                                                    dataKey={key}
+                                                    stroke={color}
+                                                    strokeWidth={2}
+                                                />
+                                            ))}
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </Box>
+                        )}
+
+                        {!loading && !error && tab === 1 && !data && (
+                            <Paper
+                                elevation={0}
+                                sx={{
+                                    display: "flex",
+                                    p: 7,
+                                    border: "1px solid #e0e0e0",
+                                    justifyContent: "center",
+                                    boxShadow: "none"
+                                }}
+                                >
+                                <Typography variant="h4">
+                                    Select Entity and Time Period to view the Filtered Time Series.
+                                </Typography>
+                            </Paper>
+                        )}
+
+                    </Paper>
                 </Paper>
 
             </Box>
