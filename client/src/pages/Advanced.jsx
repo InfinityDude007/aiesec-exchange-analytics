@@ -188,39 +188,89 @@ export function Advanced() {
                         )}
 
                         {!loading && !error && tab === 0 && data && (
-                            <ResponsiveContainer width="100%" height={600}>
-                                <AreaChart data={timeSeriesData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis
-                                        dataKey="date"
-                                        tickFormatter={(value) =>
-                                            new Date(value).toLocaleDateString(undefined, {
-                                                month: "short",
-                                                day: "numeric"
-                                            })
+                            <Box>
+                                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                                    <FormControl size="small">
+                                        <InputLabel>Visible Lines</InputLabel>
+                                        <Select
+                                            multiple
+                                            value={selectedLines}
+                                            onChange={(e) => setSelectedLines(e.target.value)}
+                                            label="Visible Lines"
+                                            renderValue={(selected) => selected.join(", ")}
+                                            sx={{
+                                                backgroundColor: theme.palette.background.default,
+                                                "& .MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.background.tertiary },
+                                                "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: `${theme.palette.primary.main}80` },
+                                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: `${theme.palette.primary.main}90` },
+                                            }}
+                                        >
+                                            {Object.keys(seriesConfig).map((key) => (
+                                                <MenuItem
+                                                    key={key}
+                                                    value={key}
+                                                    sx={{
+                                                        "&:hover": { backgroundColor: `${theme.palette.primary.main}20` },
+                                                        "&.Mui-selected": { backgroundColor: `${theme.palette.primary.main}20` },
+                                                    }}
+                                                >
+                                                    <Checkbox size="small" checked={selectedLines.includes(key)} />
+                                                    <ListItemText primary={key} />
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    <FormControlLabel
+                                        labelPlacement="start"
+                                        control={
+                                            <Switch
+                                                size="small"
+                                                checked={lineType === "monotone"}
+                                                onChange={(e) =>
+                                                    setLineType(e.target.checked ? "monotone" : "linear")
+                                                }
+                                                color="primary"
+                                            />
                                         }
+                                        label={lineType === "monotone" ? "Smooth" : "Linear"}
                                     />
-                                    <YAxis />
-                                    <Tooltip content={<TimeSeriesTooltip />} />
-                                    <Legend
-                                        formatter={(value) => (
-                                            <span style={{ fontSize: 14, marginRight: "15px" }}>{value}</span>
-                                        )}
-                                    />
-
-                                    {Object.entries(seriesConfig).map(([key, color]) => (
-                                        <Area
-                                            key={key}
-                                            type="monotone"
-                                            dataKey={key}
-                                            stackId="1"
-                                            stroke={color}
-                                            fill={color}
-                                            fillOpacity={0.6}
+                                </Box>
+                                <ResponsiveContainer width="100%" height={600}>
+                                    <AreaChart data={timeSeriesData}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis
+                                            dataKey="date"
+                                            tickFormatter={(value) =>
+                                                new Date(value).toLocaleDateString(undefined, {
+                                                    month: "short",
+                                                    day: "numeric"
+                                                })
+                                            }
                                         />
-                                    ))}
-                                </AreaChart>
-                            </ResponsiveContainer>
+                                        <YAxis />
+                                        <Tooltip content={<TimeSeriesTooltip />} />
+                                        <Legend
+                                            formatter={(value) => (
+                                                <span style={{ fontSize: 14, marginRight: "15px" }}>{value}</span>
+                                            )}
+                                        />
+
+                                        {Object.entries(seriesConfig)
+                                            .filter(([key]) => selectedLines.includes(key))
+                                            .map(([key, color]) => (
+                                                <Area
+                                                    key={key}
+                                                    type={lineType}
+                                                    dataKey={key}
+                                                    stackId="1"
+                                                    stroke={color}
+                                                    fill={color}
+                                                    fillOpacity={0.6}
+                                                />
+                                            ))}
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </Box>
                         )}
 
                         {!loading && !error && tab === 0 && !data && (
@@ -241,36 +291,90 @@ export function Advanced() {
                         )}
 
                         {!loading && !error && tab === 1 && data && (
-                            <ResponsiveContainer width="100%" height={600}>
-                                <LineChart data={deltaSeriesData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-
-                                    <XAxis
-                                        dataKey="date"
-                                        tickFormatter={(value) =>
-                                            new Date(value).toLocaleDateString(undefined, {
-                                                month: "short",
-                                                day: "numeric"
-                                            })
+                            <Box>
+                                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                                    <FormControl size="small">
+                                        <InputLabel>Visible Lines</InputLabel>
+                                        <Select
+                                            multiple
+                                            value={selectedLines}
+                                            onChange={(e) => setSelectedLines(e.target.value)}
+                                            label="Visible Lines"
+                                            renderValue={(selected) => selected.join(", ")}
+                                            sx={{
+                                                backgroundColor: theme.palette.background.default,
+                                                "& .MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.background.tertiary },
+                                                "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: `${theme.palette.primary.main}80` },
+                                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: `${theme.palette.primary.main}90` },
+                                            }}
+                                        >
+                                            {Object.keys(seriesConfig).map((key) => (
+                                                <MenuItem
+                                                    key={key}
+                                                    value={key}
+                                                    sx={{
+                                                        "&:hover": { backgroundColor: `${theme.palette.primary.main}20` },
+                                                        "&.Mui-selected": { backgroundColor: `${theme.palette.primary.main}20` },
+                                                    }}
+                                                >
+                                                    <Checkbox size="small" checked={selectedLines.includes(key)} />
+                                                    <ListItemText primary={key} />
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    <FormControlLabel
+                                        labelPlacement="start"
+                                        control={
+                                            <Switch
+                                                size="small"
+                                                checked={lineType === "monotone"}
+                                                onChange={(e) =>
+                                                    setLineType(e.target.checked ? "monotone" : "linear")
+                                                }
+                                                color="primary"
+                                            />
                                         }
+                                        label={lineType === "monotone" ? "Smooth" : "Linear"}
                                     />
+                                </Box>
+                                <ResponsiveContainer width="100%" height={600}>
+                                    <LineChart data={deltaSeriesData}>
+                                        <CartesianGrid strokeDasharray="3 3" />
 
-                                    <YAxis />
-                                    <Tooltip content={<TimeSeriesTooltip />} />
-                                    <Legend />
-
-                                    {Object.entries(seriesConfig).map(([key, color]) => (
-                                        <Line
-                                            key={key}
-                                            type="monotone"
-                                            dataKey={key}
-                                            stroke={color}
-                                            strokeWidth={2}
-                                            dot={false}
+                                        <XAxis
+                                            dataKey="date"
+                                            tickFormatter={(value) =>
+                                                new Date(value).toLocaleDateString(undefined, {
+                                                    month: "short",
+                                                    day: "numeric"
+                                                })
+                                            }
                                         />
-                                    ))}
-                                </LineChart>
-                            </ResponsiveContainer>
+
+                                        <YAxis />
+                                        <Tooltip content={<TimeSeriesTooltip />} />
+                                        <Legend
+                                            formatter={(value) => (
+                                                <span style={{ fontSize: 14, marginRight: "15px" }}>{value}</span>
+                                            )}
+                                        />
+
+                                        {Object.entries(seriesConfig)
+                                            .filter(([key]) => selectedLines.includes(key))
+                                            .map(([key, color]) => (
+                                                <Line
+                                                    key={key}
+                                                    type={lineType}
+                                                    dataKey={key}
+                                                    stroke={color}
+                                                    strokeWidth={2}
+                                                    dot={false}
+                                                />
+                                            ))}
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </Box>
                         )}
 
                         {!loading && !error && tab === 1 && !data && (
