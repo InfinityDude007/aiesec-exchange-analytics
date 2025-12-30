@@ -86,9 +86,9 @@ export function KPIs() {
         { name: "Accepted by Host",value: data?.total_matched?.doc_count ?? 0, color: "#92a8cc" },
         { name: "Approvals", value: data?.total_approvals?.doc_count ?? 0, color: "#aa4643" },
         { name: "Realizations", value: data?.total_realized?.doc_count ?? 0, color: "#89a44f" },
-        { name: "Remote Realizations", value: data?.total_approvals?.doc_count ?? 0, color: "#81699b" },
+        { name: "Remote Realizations", value: data?.total_remote_realized?.doc_count ?? 0, color: "#81699b" },
         { name: "Finished", value: data?.total_finished?.doc_count ?? 0, color: "#3d96ad" },
-        { name: "Completed", value: data?.total_finished?.doc_count ?? 0, color: "#0b352a" }
+        { name: "Completed", value: data?.total_completed?.doc_count ?? 0, color: "#0b352a" }
     ];
 
     const KpiCard = ({ label, value, icon, fontColor }) => (
