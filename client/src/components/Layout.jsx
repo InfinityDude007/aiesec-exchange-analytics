@@ -23,6 +23,7 @@ import {
   Home as HomeIcon,
   Dashboard as KpisIcon,
   Analytics as GraphicalIcon,
+  QueryStats as AdvancedIcon,
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 import { api } from "../utils/api";
@@ -34,6 +35,7 @@ const menuItems = [
   { text: "Home", icon: <HomeIcon />, path: "/" },
   { text: "KPIs", icon: <KpisIcon />, path: "/kpis" },
   { text: "Graphical", icon: <GraphicalIcon />, path: "/graphical" },
+  { text: "Advanced", icon: <AdvancedIcon />, path: "/advanced" },
 ];
 
 const getPageTitle = (pathname) => {
@@ -44,6 +46,8 @@ const getPageTitle = (pathname) => {
       return "KPIs";
     case "/graphical":
       return "Graphical";
+    case "/advanced":
+      return "Advanced";
     default:
       return (<Box  component="img" src={aiesecLogo} mt={1} />);
   }

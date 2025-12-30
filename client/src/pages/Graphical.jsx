@@ -156,7 +156,6 @@ export function Graphical() {
                     <Tabs value={tab} onChange={(_, v) => setTab(v)} >
                         <Tab label="Time Series" />
                         <Tab label="Filtered Time Series" />
-                        <Tab label="Cumulative Flow" />
                     </Tabs>
 
                     <Paper elevation={0} sx={{ minWidth: "100%", boxShadow: "none", mt: 4, backgroundColor: theme.palette.background.default }}>
@@ -255,10 +254,23 @@ export function Graphical() {
                                             onChange={(e) => setSelectedLines(e.target.value)}
                                             label="Visible Lines"
                                             renderValue={(selected) => selected.join(", ")}
+                                            sx={{
+                                                backgroundColor: theme.palette.background.default,
+                                                "& .MuiOutlinedInput-notchedOutline": { borderColor: theme.palette.background.tertiary },
+                                                "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: `${theme.palette.primary.main}80` },
+                                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: `${theme.palette.primary.main}90` },
+                                            }}
                                         >
                                             {Object.keys(seriesConfig).map((key) => (
-                                                <MenuItem key={key} value={key}>
-                                                    <Checkbox checked={selectedLines.includes(key)} />
+                                                <MenuItem
+                                                    key={key}
+                                                    value={key}
+                                                    sx={{
+                                                        "&:hover": { backgroundColor: `${theme.palette.primary.main}20` },
+                                                        "&.Mui-selected": { backgroundColor: `${theme.palette.primary.main}20` },
+                                                    }}
+                                                >
+                                                    <Checkbox size="small" checked={selectedLines.includes(key)} />
                                                     <ListItemText primary={key} />
                                                 </MenuItem>
                                             ))}
@@ -332,59 +344,6 @@ export function Graphical() {
                                 >
                                 <Typography variant="h4">
                                     Select Entity and Time Period to view the Filtered Time Series.
-                                </Typography>
-                            </Paper>
-                        )}
-
-                        {!loading && !error && tab === 2 && data && (
-                            <ResponsiveContainer width="100%" height={600}>
-                                <AreaChart data={timeSeriesData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis
-                                        dataKey="date"
-                                        tickFormatter={(value) =>
-                                            new Date(value).toLocaleDateString(undefined, {
-                                                month: "short",
-                                                day: "numeric"
-                                            })
-                                        }
-                                    />
-                                    <YAxis />
-                                    <Tooltip content={<TimeSeriesTooltip />} />
-                                    <Legend
-                                        formatter={(value) => (
-                                            <span style={{ fontSize: 14, marginRight: "15px" }}>{value}</span>
-                                        )}
-                                    />
-
-                                    {Object.entries(seriesConfig).map(([key, color]) => (
-                                        <Area
-                                            key={key}
-                                            type="monotone"
-                                            dataKey={key}
-                                            stackId="1"
-                                            stroke={color}
-                                            fill={color}
-                                            fillOpacity={0.6}
-                                        />
-                                    ))}
-                                </AreaChart>
-                            </ResponsiveContainer>
-                        )}
-
-                        {!loading && !error && tab === 2 && !data && (
-                            <Paper
-                                elevation={0}
-                                sx={{
-                                    display: "flex",
-                                    p: 7,
-                                    border: "1px solid #e0e0e0",
-                                    justifyContent: "center",
-                                    boxShadow: "none"
-                                }}
-                                >
-                                <Typography variant="h4">
-                                    Select Entity and Time Period to view the Cumulative Flow.
                                 </Typography>
                             </Paper>
                         )}
