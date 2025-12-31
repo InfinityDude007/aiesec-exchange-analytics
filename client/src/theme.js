@@ -143,5 +143,12 @@ export const muiTheme = createTheme({
                 },
             },
         },
+        MuiCssBaseline: {
+            styleOverrides: {
+                ".recharts-wrapper *:focus": {
+                    outline: "none",
+                },
+            },
+        },
     },
 });
