@@ -25,9 +25,7 @@ import {
     Tooltip,
     ResponsiveContainer,
     CartesianGrid,
-    Legend,
-    AreaChart,
-    Area
+    Legend
 } from "recharts";
 import { Header } from "../components/ui/Header";
 import { Filters } from "../components/ui/Filters";
