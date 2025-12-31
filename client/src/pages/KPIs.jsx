@@ -38,6 +38,7 @@ import { Filters } from "../components/ui/Filters";
 import { CustomTooltip } from "../components/CustomTooltip";
 import { api } from "../utils/api";
 import { formatNumber } from "../utils/formatNumber";
+import { calculatePercentage } from "../utils/calculatePercentage";
 
 export function KPIs() {
     const theme = useTheme();
@@ -80,22 +81,102 @@ export function KPIs() {
         color: metric.fontColor
     }));
 
+    const totalApplications = data?.total_applications?.doc_count ?? 0;
     const funnelData = [
-        { name: "Sign Ups", value: data?.total_signup?.doc_count ?? 0, color: "#a47d7c" },
-        { name: "Applications", value: data?.total_applications?.doc_count ?? 0, color: "#4671a6" },
-        { name: "Accepted by Host",value: data?.total_matched?.doc_count ?? 0, color: "#92a8cc" },
-        { name: "Approvals", value: data?.total_approvals?.doc_count ?? 0, color: "#aa4643" },
-        { name: "Realizations", value: data?.total_realized?.doc_count ?? 0, color: "#89a44f" },
-        { name: "Remote Realizations", value: data?.total_remote_realized?.doc_count ?? 0, color: "#81699b" },
-        { name: "Finished", value: data?.total_finished?.doc_count ?? 0, color: "#3d96ad" },
-        { name: "Completed", value: data?.total_completed?.doc_count ?? 0, color: "#0b352a" }
+        {
+            name: "Sign Ups",
+            value: data?.total_signup?.doc_count ?? 0,
+            color: "#a47d7c",
+            ...calculatePercentage()
+        },
+        {
+            name: "Applications",
+            value: data?.total_applications?.doc_count ?? 0,
+            color: "#4671a6",
+            ...calculatePercentage(
+                totalApplications,
+                data?.total_signup?.doc_count ?? 0,
+                "total sign ups"
+            )
+        },
+        {
+            name: "Accepted by Host",
+            value: data?.total_matched?.doc_count ?? 0,
+            color: "#92a8cc",
+            ...calculatePercentage(
+                data?.total_matched?.doc_count ?? 0,
+                totalApplications,
+                "total applications"
+            )
+        },
+        { 
+            name: "Approvals",
+            value: data?.total_approvals?.doc_count ?? 0,
+            color: "#aa4643",
+            ...calculatePercentage(
+                data?.total_approvals?.doc_count ?? 0,
+                totalApplications,
+                "total applications",
+                data?.total_matched?.doc_count ?? 0,
+                "applications accepted by host",
+            )
+        },
+        { 
+            name: "Realizations",
+            value: data?.total_realized?.doc_count ?? 0,
+            color: "#89a44f" ,
+            ...calculatePercentage(
+                data?.total_realized?.doc_count ?? 0,
+                totalApplications,
+                "total applications",
+                data?.total_approvals?.doc_count ?? 0,
+                "approved applications"
+            )
+        },
+        { 
+            name: "Remote Realizations",
+            value: data?.total_remote_realized?.doc_count ?? 0,
+            color: "#81699b",
+            ...calculatePercentage(
+                data?.total_remote_realized?.doc_count ?? 0,
+                totalApplications,
+                "total applications",
+                data?.total_approvals?.doc_count ?? 0,
+                "approved applications",
+            )
+        },
+        { 
+            name: "Finished",
+            value: data?.total_finished?.doc_count ?? 0,
+            color: "#3d96ad",
+            ...calculatePercentage(
+                data?.total_finished?.doc_count ?? 0,
+                totalApplications,
+                "total applications",
+                data?.total_realized?.doc_count ?? 0,
+                "total applications realized"
+            )
+
+        },
+        { 
+            name: "Completed",
+            value: data?.total_completed?.doc_count ?? 0,
+            color: "#0b352a" ,
+            ...calculatePercentage(
+                data?.total_completed?.doc_count ?? 0,
+                totalApplications,
+                "total applications",
+                data?.total_realized?.doc_count ?? 0,
+                "total applications realized"
+            )
+        }
     ];
     const filteredFunnelData = funnelData.filter(item => item.value > 0);
     const skippedFunnelData = funnelData.filter(item => item.value === 0);
 
     const FunnelTooltip = ({ active, payload }) => {
         if (!active || !payload || !payload.length) return null;
-        const { name, value, color } = payload[0].payload;
+        const { name, color, percentage1, label1, percentage2, label2 } = payload[0].payload;
         return (
             <Box
                 sx={{
@@ -103,13 +184,23 @@ export function KPIs() {
                     p: 2,
                     borderRadius: "6px",
                     boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 0.5
                 }}
             >
+                <Typography fontSize="1rem" fontWeight={600}>{name}</Typography>
                 <Typography fontSize="0.95rem">
-                    {name} :{" "}
                     <span style={{ fontWeight: 600, color }}>
-                    {formatNumber(value)}
+                        {percentage1}
                     </span>
+                    {" "} {label1}
+                </Typography>
+                <Typography fontSize="0.95rem">
+                    <span style={{ fontWeight: 600, color }}>
+                        {percentage2}
+                    </span>
+                    {" "} {label2}
                 </Typography>
             </Box>
         );
@@ -289,7 +380,10 @@ export function KPIs() {
                                         </Funnel>
                                     </FunnelChart>
                                 </ResponsiveContainer>
-                                <Box sx={{ display: "flex", justifyContent: "start", minWidth: "100%" }}>
+                                <Box sx={{ display: "flex", minWidth: "100%", justifyContent: "space-between" }}>
+                                    <Typography variant="body1">
+                                        Hover section for % breakdowns.
+                                    </Typography>
                                     <Box sx={{ display: "flex", flexDirection: "column" }}>
                                         <Typography variant="body1" justifySelf={"start"}>Omitted metrics:</Typography>
                                         {skippedFunnelData.map((entry, index) => (
