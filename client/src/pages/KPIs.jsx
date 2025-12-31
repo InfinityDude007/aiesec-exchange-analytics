@@ -33,8 +33,8 @@ import {
     Funnel,
     LabelList
 } from "recharts";
-import { Header } from "../components/Header";
-import { Filters } from "../components/Filters";
+import { Header } from "../components/ui/Header";
+import { Filters } from "../components/ui/Filters";
 import { CustomTooltip } from "../components/CustomTooltip";
 import { api } from "../utils/api";
 import { formatNumber } from "../utils/formatNumber";

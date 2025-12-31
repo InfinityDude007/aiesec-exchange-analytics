@@ -29,8 +29,8 @@ import {
     AreaChart,
     Area
 } from "recharts";
-import { Header } from "../components/Header";
-import { Filters } from "../components/Filters";
+import { Header } from "../components/ui/Header";
+import { Filters } from "../components/ui/Filters";
 import { api } from "../utils/api";
 import { formatNumber } from "../utils/formatNumber";
 

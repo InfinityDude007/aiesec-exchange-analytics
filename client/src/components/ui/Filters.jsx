@@ -25,7 +25,7 @@ import {
     Search as SearchIcon,
     Tune as FilterIcon,
 } from "@mui/icons-material";
-import { api } from "../utils/api";
+import { api } from "../../utils/api";
 
 
 export function Filters({ isLoading, onChange }) {

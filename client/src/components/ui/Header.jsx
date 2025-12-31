@@ -1,19 +1,8 @@
-import { useState, useEffect } from "react";
 import {
     Box,
     Typography,
-    Paper,
-    Button,
-    CircularProgress,
     useTheme,
 } from "@mui/material";
-import {
-    Article as ArticleIcon,
-    CheckCircle as CheckCircleIcon,
-    Cancel as CrossCircleIcon,
-    OpenInNew as OpenInNewIcon,
-} from "@mui/icons-material";
-import { api } from "../utils/api";
 
 export function Header({ title, subtitle }) {
     const theme = useTheme();

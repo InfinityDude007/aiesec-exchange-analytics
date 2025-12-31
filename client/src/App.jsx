@@ -4,7 +4,7 @@ import { muiTheme } from "./theme";
 
 import { ProtectedRoute } from "./utils/ProtectedRoute";
 import { Login } from "./pages/Login";
-import { Layout } from "./components/Layout";
+import { Layout } from "./components/ui/Layout";
 import { Landing } from "./pages/Landing";
 import { KPIs } from "./pages/KPIs";
 import { Graphical } from "./pages/Graphical";

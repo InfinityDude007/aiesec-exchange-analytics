@@ -26,8 +26,8 @@ import {
   QueryStats as AdvancedIcon,
   Logout as LogoutIcon,
 } from "@mui/icons-material";
-import { api } from "../utils/api";
-import aiesecLogo from "../assets/aiesec-logo-blue.svg";
+import { api } from "../../utils/api";
+import aiesecLogo from "../../assets/aiesec-logo-blue.svg";
 
 const drawerWidth = 260;
 
