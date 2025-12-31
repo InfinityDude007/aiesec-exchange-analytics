@@ -90,6 +90,30 @@ export function KPIs() {
         { name: "Finished", value: data?.total_finished?.doc_count ?? 0, color: "#3d96ad" },
         { name: "Completed", value: data?.total_completed?.doc_count ?? 0, color: "#0b352a" }
     ];
+    const filteredFunnelData = funnelData.filter(item => item.value > 0);
+    const skippedFunnelData = funnelData.filter(item => item.value === 0);
+
+    const FunnelTooltip = ({ active, payload }) => {
+        if (!active || !payload || !payload.length) return null;
+        const { name, value, color } = payload[0].payload;
+        return (
+            <Box
+                sx={{
+                    backgroundColor: "background.paper",
+                    p: 2,
+                    borderRadius: "6px",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                }}
+            >
+                <Typography fontSize="0.95rem">
+                    {name} :{" "}
+                    <span style={{ fontWeight: 600, color }}>
+                    {formatNumber(value)}
+                    </span>
+                </Typography>
+            </Box>
+        );
+    };
 
     const KpiCard = ({ label, value, icon, fontColor }) => (
         <Box
@@ -231,17 +255,17 @@ export function KPIs() {
                         )}
 
                         {!loading && !error && tab === 2 && data && (
-                            <Box>
+                            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                                 <ResponsiveContainer width="100%" height={600}>
-                                    <FunnelChart>
+                                    <FunnelChart margin={{ right: 120, left: 120, bottom: 10 }}>
+                                        <Tooltip content={<FunnelTooltip />} />
                                         <Funnel
                                             dataKey="value"
-                                            data={funnelData}
+                                            data={filteredFunnelData}
                                             isAnimationActive
                                             stroke="#fff"
-                                            reversed
                                         >
-                                            {funnelData.map((entry, index) => (
+                                            {filteredFunnelData.map((entry, index) => (
                                                 <Cell key={index} fill={entry.color} />
                                             ))}
 
@@ -249,20 +273,31 @@ export function KPIs() {
                                                 position="left"
                                                 dataKey="name"
                                                 fill={theme.palette.text.primary}
-                                                offset={20} 
+                                                offset={50} 
                                                 fontSize={16}
+                                                fontWeight={600}
                                             />
 
                                             <LabelList
                                                 position="right"
                                                 dataKey="value"
-                                                offset={20}
+                                                formatter={(val) => formatNumber(val)}
+                                                offset={50}
                                                 fontSize={16}
-                                                fontWeight={600}                               
+                                                fontWeight={600}                       
                                             />
                                         </Funnel>
                                     </FunnelChart>
                                 </ResponsiveContainer>
+                                <Box sx={{ display: "flex", justifyContent: "start", minWidth: "100%" }}>
+                                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                        <Typography variant="body1" justifySelf={"start"}>Omitted metrics:</Typography>
+                                        {skippedFunnelData.map((entry, index) => (
+                                            <Typography variant="body2">
+                                                {index+1}. {entry.name} : {entry.value}
+                                            </Typography>))}
+                                    </Box>
+                                </Box>
                             </Box>
                         )}
 
