@@ -274,6 +274,7 @@ export function Filters({ isLoading, onChange }) {
                                         {...params}
                                         size="small"
                                         label="Entity"
+                                        placeholder="Type and click →"
                                         value={officeQuery}
                                         onChange={(e) => setOfficeQuery(e.target.value)}
                                         sx={{
