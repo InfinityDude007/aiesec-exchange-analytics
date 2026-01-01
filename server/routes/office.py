@@ -24,7 +24,7 @@ async def search_offices(q: str, request: Request):
         }
     """
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=10.0) as client:
         response = await client.post(
             str(settings.aiesec_graphql_url),
             json={
@@ -56,6 +56,6 @@ async def search_offices(q: str, request: Request):
             )
 
     if not filtered_offices:
-        raise HTTPException(status_code=404, detail="No office found.")
+        return OfficeListResponse(offices=[])
 
     return OfficeListResponse(offices=filtered_offices)
