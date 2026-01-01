@@ -109,6 +109,43 @@ export function Advanced() {
         );
     };
 
+    const DeltaSeriesTooltip = ({ active, payload, label }) => {
+        if (!active || !payload || !payload.length) return null;
+        return (
+            <Box
+                sx={{
+                    backgroundColor: theme.palette.background.paper,
+                    p: 2,
+                    borderRadius: "6px",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                }}
+            >
+                <Typography fontWeight={600} sx={{ mb: 1 }}>
+                    {new Date(label).toLocaleDateString(undefined, { month: "long", day: "numeric" })}
+                </Typography>
+
+                {payload.map((item) => (
+                    <Box
+                        key={item.dataKey}
+                        sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}
+                    >
+                        <Typography
+                            sx={{
+                                fontSize: "1rem",
+                                color: "#555",
+                            }}
+                        >
+                            {item.dataKey} : {""}
+                                <span style={{ fontWeight: 600, color: item.stroke, fontSize: "1rem" }}>
+                                    {item.value < 0 ? "" : "+"}{formatNumber(item.value)}%
+                                </span>
+                        </Typography>
+                    </Box>
+                ))}
+            </Box>
+        );
+    };
+
     const seriesConfig = {
         "Sign Ups": "#a47d7c",
         "Applications": "#4671a6",
@@ -129,7 +166,16 @@ export function Advanced() {
             const row = { date: current.date };
 
             Object.keys(seriesConfig).forEach(key => {
-                row[key] = current[key] - prev[key];
+                const prevVal = prev[key];
+                const currVal = current[key];
+
+                if (prevVal === 0 || prevVal === null || prevVal === undefined) {
+                    row[key] = null;
+                } else {
+                    const val = ((currVal - prevVal) / prevVal) * 100;
+                    const decimal = val > 10 || val < -10 ? 1 : 2;
+                    row[key] = val.toFixed(decimal);
+                }
             });
 
             return row;
@@ -334,8 +380,11 @@ export function Advanced() {
                                             }
                                         />
 
-                                        <YAxis />
-                                        <Tooltip content={<TimeSeriesTooltip />} />
+                                        <YAxis
+                                            tickFormatter={(value) => `${value.toFixed(1)}%`}
+                                        />
+
+                                        <Tooltip content={<DeltaSeriesTooltip />} />
                                         <Legend
                                             formatter={(value) => (
                                                 <span style={{ fontSize: 14, marginRight: "15px" }}>{value}</span>
