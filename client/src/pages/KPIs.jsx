@@ -366,13 +366,15 @@ export function KPIs() {
                                     <Typography variant="body1">
                                         Hover section for % breakdowns.
                                     </Typography>
-                                    <Box sx={{ display: "flex", flexDirection: "column" }}>
-                                        <Typography variant="body1" justifySelf={"start"}>Omitted metrics:</Typography>
-                                        {skippedFunnelData.map((entry, index) => (
-                                            <Typography variant="body2">
-                                                {index+1}. {entry.name} : {entry.value}
-                                            </Typography>))}
-                                    </Box>
+                                    {skippedFunnelData.length > 0 ? (
+                                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                            <Typography variant="body1" justifySelf={"start"}>Omitted metrics:</Typography>
+                                            {skippedFunnelData.map((entry, index) => (
+                                                <Typography variant="body2">
+                                                    {index+1}. {entry.name} : {entry.value}
+                                                </Typography>))}
+                                        </Box>
+                                    ) : (<></>)}
                                 </Box>
                             </Box>
                         )}
