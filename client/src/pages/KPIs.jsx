@@ -281,7 +281,7 @@ export function KPIs() {
                             <Box sx={{ mt: 3 }}>
                                 <Grid container spacing={3} justifyContent={"center"}>
                                     {metrics.map((metric) => (
-                                        <Grid key={metric.label} item xs={12} sm={6} md={3}>
+                                        <Grid key={metric.label}>
                                             <KpiCard label={metric.label} value={metric.value} fontColor={metric.fontColor} icon={metric.icon} />
                                         </Grid>
                                     ))}
@@ -370,7 +370,7 @@ export function KPIs() {
                                         <Box sx={{ display: "flex", flexDirection: "column" }}>
                                             <Typography variant="body1" justifySelf={"start"}>Omitted metrics:</Typography>
                                             {skippedFunnelData.map((entry, index) => (
-                                                <Typography variant="body2">
+                                                <Typography variant="body2" key={index}>
                                                     {index+1}. {entry.name} : {entry.value}
                                                 </Typography>))}
                                         </Box>

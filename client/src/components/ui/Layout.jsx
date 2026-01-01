@@ -126,46 +126,50 @@ export function Layout() {
           </Typography>
 
           <Tooltip title={loading ? "Loading" : "Refresh status"} placement="bottom" arrow>
-            <Button
-              variant="rounded"
-              color="inherit"
-              onClick={() => refreshServerHealth()}
-              disabled={loading}
-              sx={{
-                borderColor: theme.palette.text.secondary,
-                color: theme.palette.text.primary,
-                mr: 2,
-                "&:hover": {
-                  borderColor: theme.palette.primary.main,
-                  color: theme.palette.primary.main,
-                },
-              }}
-            >
-              <Typography>Server:</Typography>
-              {(loading ?
-                <CircularProgress size="20px" sx={{ ml: 2.5, mr: 2, color: theme.palette.primary.main }} />
-                : <Typography sx={{ ml: 1, fontWeight: 600, color: `${getStatusColor()}` }}>{getStatusLabel()}</Typography>
-              )}
-            </Button>
+            <span>
+              <Button
+                variant="rounded"
+                color="inherit"
+                onClick={() => refreshServerHealth()}
+                disabled={loading}
+                sx={{
+                  borderColor: theme.palette.text.secondary,
+                  color: theme.palette.text.primary,
+                  mr: 2,
+                  "&:hover": {
+                    borderColor: theme.palette.primary.main,
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                <Typography>Server:</Typography>
+                {(loading ?
+                  <CircularProgress size="20px" sx={{ ml: 2.5, mr: 2, color: theme.palette.primary.main }} />
+                  : <Typography sx={{ ml: 1, fontWeight: 600, color: `${getStatusColor()}` }}>{getStatusLabel()}</Typography>
+                )}
+              </Button>
+            </span>
           </Tooltip>
 
           <Tooltip title="Log out" placement="bottom" arrow>
-            <IconButton
-              variant="rounded"
-              color="inherit"
-              onClick={logout}
-              disabled={loggingOut}
-              sx={{
-                borderColor: theme.palette.text.secondary,
-                color: theme.palette.text.primary,
-                "&:hover": {
-                  borderColor: theme.palette.primary.main,
-                  color: theme.palette.primary.main,
-                },
-              }}
-            >
-              <LogoutIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                variant="rounded"
+                color="inherit"
+                onClick={logout}
+                disabled={loggingOut}
+                sx={{
+                  borderColor: theme.palette.text.secondary,
+                  color: theme.palette.text.primary,
+                  "&:hover": {
+                    borderColor: theme.palette.primary.main,
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                <LogoutIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         </Toolbar>
       </AppBar>

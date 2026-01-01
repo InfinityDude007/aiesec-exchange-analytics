@@ -269,14 +269,16 @@ export function Filters({ isLoading, onChange }) {
                                                 endAdornment: (
                                                     <>
                                                         <Tooltip title={officeLoading ? "Loading" : "Type to search"} arrow>
-                                                            <IconButton
-                                                                size="small"
-                                                                sx={{ "&:hover": { color: theme.palette.primary.main }, p: 0, mr: 0.5 }}
-                                                                disabled={officeLoading}
-                                                                disableRipple
-                                                            >
-                                                                {officeLoading ? <CircularProgress size="20px" /> : <SearchIcon sx={{ fontSize: "22px" }} />}
-                                                            </IconButton>
+                                                            <span>
+                                                                <IconButton
+                                                                    size="small"
+                                                                    sx={{ "&:hover": { color: theme.palette.primary.main }, p: 0, mr: 0.5 }}
+                                                                    disabled={officeLoading}
+                                                                    disableRipple
+                                                                >
+                                                                    {officeLoading ? <CircularProgress size="20px" /> : <SearchIcon sx={{ fontSize: "22px" }} />}
+                                                                </IconButton>
+                                                            </span>
                                                         </Tooltip>
                                                         {params.InputProps.endAdornment}
                                                     </>
