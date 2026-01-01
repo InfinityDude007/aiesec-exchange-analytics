@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
     Box,
     Typography,
@@ -14,44 +13,21 @@ import {
     OpenInNew as OpenInNewIcon,
 
 } from "@mui/icons-material";
-import { api } from "../utils/api";
+import { useServerHealth } from "../utils/hooks/fetchHealth";
 
 export function Landing() {
     const theme = useTheme();
-    const [serverStatus, setServerStatus] = useState("offline");
-    const [loading, setLoading] = useState(true);
-    const [healthTimestamp, setHealthTimestamp] = useState("");
     const docsUrl = import.meta.env.VITE_API_DOCS_URL;
 
-    const getServerHealth = async () => {
-        try {
-            setLoading(true);
-            const data = await api.get("/health");
-            setServerStatus(data.status === "ok" ? "online" : "offline");
-            setHealthTimestamp(data.timestamp);
-            console.info("serverHealth: Online")
-        } catch (err) {
-            console.error("Failed to reach server:", err);
-            setServerStatus("offline");
-            console.warn("serverHealth: Offline")
-        } finally {
-            const delay = setTimeout(() => {
-                setLoading(false);
-                }, 3000);
-            return () => {
-                clearTimeout(delay);
-            };
-        };
-    };
+    const {
+        status: serverStatus,
+        loading,
+        timestamp: healthTimestamp,
+    } = useServerHealth();
     
-    useEffect(() => {
-        getServerHealth();
-    }, []);
-
     return (
         <Box sx={{ maxWidth: 1200, minHeight: "85vh", mx: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <Box>
-                {/* Hero Section */}
                 <Paper
                     elevation={0}
                     sx={{
@@ -114,7 +90,6 @@ export function Landing() {
                     </Box>
                 </Paper>
 
-                {/* Project Information */}
                 <Paper
                     elevation={0}
                     sx={{
@@ -136,7 +111,6 @@ export function Landing() {
                 </Paper>
             </Box>
 
-            {/* Server Status Card */}
             {(loading ? (
                     <Paper
                         elevation={0}

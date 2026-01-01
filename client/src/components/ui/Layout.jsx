@@ -26,7 +26,8 @@ import {
   QueryStats as AdvancedIcon,
   Logout as LogoutIcon,
 } from "@mui/icons-material";
-import { api } from "../../utils/api";
+import { useServerHealth } from "../../utils/hooks/fetchHealth";
+import { useLogout } from "../../utils/hooks/handleLogout";
 import aiesecLogo from "../../assets/aiesec-logo-blue.svg";
 
 const drawerWidth = 260;
@@ -55,8 +56,6 @@ const getPageTitle = (pathname) => {
 
 export function Layout() {
   const [open, setOpen] = useState(false);
-  const [serverStatus, setServerStatus] = useState("offline");
-  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -69,39 +68,13 @@ export function Layout() {
     navigate(path);
   };
 
-  const handleLogout = async () => {
-    try {
-      await api.post("/auth/logout");
-      window.location.href = "/";
-    } catch (err) {
-      console.error("Logout failed", err);
-    }
-  };
+  const { logout, loggingOut } = useLogout();
 
-
-  const getServerHealth = async () => {
-    try {
-      setLoading(true);
-      const data = await api.get("/health");
-      setServerStatus(data.status === "ok" ? "online" : "offline");
-      console.info("serverHealth: Online")
-    } catch (err) {
-        console.error("Failed to reach server:", err);
-        setServerStatus("offline");
-        console.warn("serverHealth: Offline")
-    } finally {
-        const delay = setTimeout(() => {
-          setLoading(false);
-        }, 3000);
-        return () => {
-          clearTimeout(delay);
-        };
-    };
-  };
-
-  useEffect(() => {
-    getServerHealth();
-  }, []);
+  const {
+    status: serverStatus,
+    loading,
+    refresh: refreshServerHealth
+  } = useServerHealth();
 
   const getStatusColor = () => {
     switch (serverStatus) {
@@ -152,12 +125,12 @@ export function Layout() {
             {getPageTitle(location.pathname)}
           </Typography>
 
-          {/* Server Status */}
-          <Tooltip title="Refresh status" placement="bottom" arrow>
+          <Tooltip title={loading ? "Loading" : "Refresh status"} placement="bottom" arrow>
             <Button
               variant="rounded"
               color="inherit"
-              onClick={() => getServerHealth()}
+              onClick={() => refreshServerHealth()}
+              disabled={loading}
               sx={{
                 borderColor: theme.palette.text.secondary,
                 color: theme.palette.text.primary,
@@ -176,12 +149,12 @@ export function Layout() {
             </Button>
           </Tooltip>
 
-          {/* Logout Button */}
           <Tooltip title="Log out" placement="bottom" arrow>
             <IconButton
               variant="rounded"
               color="inherit"
-              onClick={() => handleLogout()}
+              onClick={logout}
+              disabled={loggingOut}
               sx={{
                 borderColor: theme.palette.text.secondary,
                 color: theme.palette.text.primary,

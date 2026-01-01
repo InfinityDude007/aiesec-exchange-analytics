@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Box, CircularProgress, useTheme } from "@mui/material";
-import { api } from "./api";
+import { api } from "../utils/hooks/api";
 
 export function ProtectedRoute() {
     const theme = useTheme();

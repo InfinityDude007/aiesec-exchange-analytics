@@ -25,15 +25,12 @@ import {
     Search as SearchIcon,
     Tune as FilterIcon,
 } from "@mui/icons-material";
-import { api } from "../../utils/api";
+import { useOfficeSearch } from "../../utils/hooks/searchOffices";
 
 
 export function Filters({ isLoading, onChange }) {
     const theme = useTheme();
 
-    const [officeQuery, setOfficeQuery] = useState("");
-    const [officeOptions, setOfficeOptions] = useState([]);
-    const [officeLoading, setOfficeLoading] = useState(false);
     const [selectedOffice, setSelectedOffice] = useState(null);
 
     const today = dayjs();
@@ -64,9 +61,16 @@ export function Filters({ isLoading, onChange }) {
 
     const isApplyDisabled = !selectedOffice || !startDate || !endDate || isLoading;
 
+    const {
+        officeQuery,
+        setOfficeQuery,
+        officeOptions,
+        officeLoading,
+        clearOffices
+    } = useOfficeSearch({ minLength: 2, delay: 300 });
+    
     const handleClear = () => {
-        setOfficeQuery("");
-        setOfficeOptions([]);
+        clearOffices();
         setSelectedOffice(null);
 
         setTimePeriod("");
@@ -77,23 +81,6 @@ export function Filters({ isLoading, onChange }) {
         setInterval("");
         setProducts([]);
         setAiesecer("");
-    };
-
-    const searchOffices = async () => {
-        if (!officeQuery.trim()) return;
-
-        try {
-            setOfficeLoading(true);
-
-            const data = await api.get(`/office?q=${encodeURIComponent(officeQuery)}`);
-
-            setOfficeOptions(data.offices || []);
-        } catch (err) {
-            console.error("Failed to fetch offices:", err);
-            setOfficeOptions([]);
-        } finally {
-            setOfficeLoading(false);
-        }
     };
     
     const clampToToday = (date) => {
@@ -238,18 +225,11 @@ export function Filters({ isLoading, onChange }) {
                                 getOptionLabel={(option) => option.name}
                                 value={selectedOffice}
                                 loading={officeLoading}
-                                onBlur={() => setOfficeOptions([])}
                                 clearOnBlur
                                 disableClearable
                                 forcePopupIcon={false}
                                 onChange={(event, newValue) => {
                                     setSelectedOffice(newValue);
-                                }}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        e.preventDefault();
-                                        searchOffices();
-                                    }
                                 }}
                                 sx={{
                                     backgroundColor: theme.palette.background.default,
@@ -274,7 +254,7 @@ export function Filters({ isLoading, onChange }) {
                                         {...params}
                                         size="small"
                                         label="Entity"
-                                        placeholder="Type and click →"
+                                        placeholder="Type"
                                         value={officeQuery}
                                         onChange={(e) => setOfficeQuery(e.target.value)}
                                         sx={{
@@ -288,10 +268,9 @@ export function Filters({ isLoading, onChange }) {
                                                 ...params.InputProps,
                                                 endAdornment: (
                                                     <>
-                                                        <Tooltip title={officeLoading ? "Loading" : "Search"} arrow>
+                                                        <Tooltip title={officeLoading ? "Loading" : "Type to search"} arrow>
                                                             <IconButton
                                                                 size="small"
-                                                                onClick={searchOffices}
                                                                 sx={{ "&:hover": { color: theme.palette.primary.main }, p: 0, mr: 0.5 }}
                                                                 disabled={officeLoading}
                                                                 disableRipple

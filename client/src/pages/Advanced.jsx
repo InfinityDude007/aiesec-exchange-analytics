@@ -31,32 +31,14 @@ import {
 } from "recharts";
 import { Header } from "../components/ui/Header";
 import { Filters } from "../components/ui/Filters";
-import { api } from "../utils/api";
+import { useAnalytics } from "../utils/hooks/fetchAnalytics";
 import { formatNumber } from "../utils/formatNumber";
 
 export function Advanced() {
     const theme = useTheme();
     const [filters, setFilters] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [data, setData] = useState(null);
-    const [error, setError] = useState(null);
     const [tab, setTab] = useState(0);
-
-    const fetchAnalytics = async (filters) => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            const res = await api.get("/analytics", filters);
-            setData(res.analytics);
-
-        } catch (err) {
-            console.error(err);
-            setError("Failed to load analytics");
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { data, loading, error, fetchAnalytics } = useAnalytics();
 
     const buildTimeSeries = (data) => {
         if (!data) return [];
