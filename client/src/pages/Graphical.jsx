@@ -29,6 +29,7 @@ import {
 } from "recharts";
 import { Header } from "../components/ui/Header";
 import { Filters } from "../components/ui/Filters";
+import { ChartInfo } from "../components/ChartInfo";
 import { useAnalytics } from "../utils/hooks/fetchAnalytics";
 import { formatNumber } from "../utils/formatNumber";
 
@@ -123,7 +124,7 @@ export function Graphical() {
         <Box sx={{ maxWidth: 1200, minHeight: "85vh", mx: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", mb: 4 }}>
             <Box>
 
-                <Header title={"Graphical Analytics"} subtitle={"Visualise detailed analytics based on time periods, with flexible filtering and interval-based aggregation (daily, weekly, or monthly)"} />
+                <Header title={"Graphical Analytics"} subtitle={"Visualise detailed analytics based on time periods, with flexible filtering and interval-based aggregation (daily, weekly, or monthly)."} />
                 <Filters
                     isLoading={loading}
                     onChange={(filters) => {
@@ -153,21 +154,24 @@ export function Graphical() {
 
                         {!loading && !error && tab === 0 && data && (
                             <Box>
-                                <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
-                                    <FormControlLabel
-                                        labelPlacement="start"
-                                        control={
-                                            <Switch
-                                                size="small"
-                                                checked={lineType === "monotone"}
-                                                onChange={(e) =>
-                                                    setLineType(e.target.checked ? "monotone" : "linear")
-                                                }
-                                                color="primary"
-                                            />
-                                        }
-                                        label={lineType === "monotone" ? "Smooth" : "Linear"}
-                                    />
+                                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, mx: 1.5 }}>
+                                    <ChartInfo detail="This chart shows how each metric evolves over time based on aggregated activity per time interval. Each line represents the total number of events recorded for that metric at each point in time." />
+                                    <Box sx={{ display: "flex", justifyContent: "end", width: "100px" }}>
+                                        <FormControlLabel
+                                            labelPlacement="start"
+                                            control={
+                                                <Switch
+                                                    size="small"
+                                                    checked={lineType === "monotone"}
+                                                    onChange={(e) =>
+                                                        setLineType(e.target.checked ? "monotone" : "linear")
+                                                    }
+                                                    color="primary"
+                                                />
+                                            }
+                                            label={lineType === "monotone" ? "Smooth" : "Linear"}
+                                        />
+                                    </Box>
                                 </Box>
 
                                 <ResponsiveContainer width="100%" height={600}>
@@ -225,7 +229,8 @@ export function Graphical() {
 
                         {!loading && !error && tab === 1 && data && (
                             <Box>
-                                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2, mx: 1.5 }}>
+                                    <ChartInfo detail="This chart allows for metrics to be filtered and shows how each metric evolves over time based on aggregated activity per time interval. Each line represents the total number of events recorded for that metric at each point in time." />
                                     <FormControl size="small">
                                         <InputLabel>Visible Lines</InputLabel>
                                         <Select
@@ -256,20 +261,22 @@ export function Graphical() {
                                             ))}
                                         </Select>
                                     </FormControl>
-                                    <FormControlLabel
-                                        labelPlacement="start"
-                                        control={
-                                            <Switch
-                                                size="small"
-                                                checked={lineType === "monotone"}
-                                                onChange={(e) =>
-                                                    setLineType(e.target.checked ? "monotone" : "linear")
-                                                }
-                                                color="primary"
-                                            />
-                                        }
-                                        label={lineType === "monotone" ? "Smooth" : "Linear"}
-                                    />
+                                    <Box sx={{ display: "flex", justifyContent: "end", width: "100px" }}>
+                                        <FormControlLabel
+                                            labelPlacement="start"
+                                            control={
+                                                <Switch
+                                                    size="small"
+                                                    checked={lineType === "monotone"}
+                                                    onChange={(e) =>
+                                                        setLineType(e.target.checked ? "monotone" : "linear")
+                                                    }
+                                                    color="primary"
+                                                />
+                                            }
+                                            label={lineType === "monotone" ? "Smooth" : "Linear"}
+                                        />
+                                    </Box>
                                 </Box>
 
                                 <ResponsiveContainer width="100%" height={600}>

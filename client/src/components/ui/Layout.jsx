@@ -73,7 +73,8 @@ export function Layout() {
   const {
     status: serverStatus,
     loading,
-    refresh: refreshServerHealth
+    refresh: refreshServerHealth,
+    timestamp: healthTimestamp,
   } = useServerHealth();
 
   const getStatusColor = () => {
@@ -125,7 +126,25 @@ export function Layout() {
             {getPageTitle(location.pathname)}
           </Typography>
 
-          <Tooltip title={loading ? "Loading" : "Refresh status"} placement="bottom" arrow>
+          <Tooltip
+            title={
+              loading ? (
+                "Loading"
+              ) : (
+                <>
+                  <span>
+                    Refresh status
+                  </span>
+                  <br />
+                  <span>
+                    Last updated: {healthTimestamp}
+                  </span>
+                </>
+              )
+            }
+            placement="left"
+            arrow
+          >
             <span>
               <Button
                 variant="rounded"

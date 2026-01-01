@@ -150,5 +150,14 @@ export const muiTheme = createTheme({
                 },
             },
         },
+        MuiTooltip: {
+            styleOverrides: {
+                tooltip: {
+                    fontSize: "14px",
+                    lineHeight: 1.4,
+                    padding: 10,
+                },
+            },
+        },
     },
 });

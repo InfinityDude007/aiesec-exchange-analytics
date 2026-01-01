@@ -192,7 +192,7 @@ export function Filters({ isLoading, onChange }) {
                                 gap: 2,
                             }}
                         >
-                            <Tooltip title="Clear filters" arrow placement="bottom">
+                            <Tooltip title="Clear filters" arrow placement="left">
                                 <IconButton
                                     onClick={() => handleClear()}
                                     sx={{ "&:hover": { color: theme.palette.error.dark } }}

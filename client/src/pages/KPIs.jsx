@@ -35,6 +35,7 @@ import {
 } from "recharts";
 import { Header } from "../components/ui/Header";
 import { Filters } from "../components/ui/Filters";
+import { ChartInfo } from "../components/ChartInfo";
 import { CustomTooltip } from "../components/CustomTooltip";
 import { useAnalytics } from "../utils/hooks/fetchAnalytics";
 import { formatNumber } from "../utils/formatNumber";
@@ -278,7 +279,7 @@ export function KPIs() {
                         )}
 
                         {!loading && !error && tab === 0 && data && (
-                            <Box sx={{ mt: 3 }}>
+                            <Box>
                                 <Grid container spacing={3} justifyContent={"center"}>
                                     {metrics.map((metric) => (
                                         <Grid key={metric.label}>
@@ -286,6 +287,12 @@ export function KPIs() {
                                         </Grid>
                                     ))}
                                 </Grid>
+                                <Box sx={{ display: "flex", justifyContent: "end", alignItems: "center", mt: 3, mx: 2 }}>
+                                    <ChartInfo
+                                        detail="Displays total counts for each stage in the exchange process for the selected time range. Each value represents the total number of records associated with that metric."
+                                        position="left"
+                                    />
+                                </Box>
                             </Box>
                         )}
 
@@ -307,6 +314,12 @@ export function KPIs() {
                                         </Bar>
                                     </BarChart>
                                 </ResponsiveContainer>
+                                <Box sx={{ display: "flex", justifyContent: "end", alignItems: "center", mt: 1, mx: 2 }}>
+                                    <ChartInfo
+                                        detail="This chart displays the volume of each metric within the selected time period. Useful for understanding how activity is distributed across the exchange process, relative to each metric."
+                                        position="left"
+                                    />
+                                </Box>
                             </Box>
                         )}
 
@@ -362,10 +375,7 @@ export function KPIs() {
                                         </Funnel>
                                     </FunnelChart>
                                 </ResponsiveContainer>
-                                <Box sx={{ display: "flex", minWidth: "100%", justifyContent: "space-between" }}>
-                                    <Typography variant="body1">
-                                        Hover section for % breakdowns.
-                                    </Typography>
+                                <Box sx={{ display: "flex", minWidth: "100%", justifyContent: "space-between", mx: 2 }}>
                                     {skippedFunnelData.length > 0 ? (
                                         <Box sx={{ display: "flex", flexDirection: "column" }}>
                                             <Typography variant="body1" justifySelf={"start"}>Omitted metrics:</Typography>
@@ -375,6 +385,15 @@ export function KPIs() {
                                                 </Typography>))}
                                         </Box>
                                     ) : (<></>)}
+                                    <Typography variant="body1">
+                                        <Box sx={{ display: "flex", justifyContent: "end", alignItems: "center", mb: 1 }}>
+                                            <ChartInfo
+                                                detail="Visualizes how entities progress through each stage of the exchange process, showing drop-offs and conversion efficiency between steps."
+                                                position="left"
+                                            />
+                                        </Box>
+                                        Hover section for % breakdowns.
+                                    </Typography>
                                 </Box>
                             </Box>
                         )}
