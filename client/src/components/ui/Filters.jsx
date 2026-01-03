@@ -15,6 +15,7 @@ import {
     TextField,
     Checkbox,
     ListItemText,
+    Alert,
     useTheme,
 } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
@@ -66,7 +67,8 @@ export function Filters({ isLoading, onChange }) {
         setOfficeQuery,
         officeOptions,
         officeLoading,
-        clearOffices
+        clearOffices,
+        error
     } = useOfficeSearch({ minLength: 2, delay: 300 });
     
     const handleClear = () => {
@@ -414,6 +416,11 @@ export function Filters({ isLoading, onChange }) {
                         ))}
 
                     </Box>
+                    {error && (
+                        <Alert severity="error" sx={{ px: 2, py: 1, fontSize: "1rem", display: "flex", alignItems: "center" }}>
+                            {error}
+                        </Alert>
+                    )}
                 </Paper>
             </Box>
         </Box>
